@@ -1,0 +1,29 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1;
+  font-weight: 500;
+  color: #021024;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-content: center;
+  background: linear-gradient(0deg, rgba(2 16 36 / 100%) 0%, rgba(84 131 179 / 100%) 50%, rgba(193 232 255 / 100%) 100%);
+}
+
+#app {
+  width: 100%;
+  max-width: 1080px;
+  min-height: 100vh;
+  padding: 0 12px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+}
