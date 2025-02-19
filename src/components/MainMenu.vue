@@ -52,7 +52,11 @@ const toggleContacts = (event: Event) => {
 };
 
 const contactsElem = useTemplateRef<HTMLElement>('contactsElem');
-onClickOutside(contactsElem, toggleContacts);
+onClickOutside(contactsElem, (event: Event) => {
+  if (contactsVisible.value) {
+    toggleContacts(event);
+  }
+});
 
 interface Contact {
   name: string

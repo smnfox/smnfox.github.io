@@ -3,6 +3,7 @@ import { onBeforeMount } from 'vue';
 import MainMenu from './components/MainMenu.vue';
 import { sounds } from './services/sounds';
 import Blob from "./assets/blob.svg";
+import PageFooter from './components/PageFooter.vue';
 
 onBeforeMount(() => {
     sounds.muteOnVisibilityChange();
@@ -15,9 +16,12 @@ onBeforeMount(() => {
     <div class="content">
         <router-view />
     </div>
+    <PageFooter />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+@import 'primeicons/primeicons.css';
+
 .menu {
     width: 100%;
     flex-shrink: 0;
