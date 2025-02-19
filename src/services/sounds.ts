@@ -1,14 +1,21 @@
 
 import { tryOnBeforeUnmount } from "@vueuse/core";
 import { Howl } from "howler";
-import { MAX_DELAY_BEFORE_PLAY, SOUND_MAP } from "../constants/sounds";
 import type { Sound, SoundCache, SoundKey } from "../types/sounds";
+
+export const SOUND_MAP = {
+  jump: '/sounds/jump.wav',
+  defeat: '/sounds/defeat.wav',
+  click: '/sounds/click.wav',
+}
+export const GAME_SOUNDS: SoundKey[] = ['jump', 'defeat'];
+const MAX_DELAY_BEFORE_PLAY = 2000;
 
 class Sounds {
     private soundCache: SoundCache;
     private muteSources: Set<number> = new Set();
     private pageUnfocusMuteSourceId: number | undefined;
-    private localVolume: number = 1;
+    private localVolume: number = 0.1;
 
     constructor() {
       this.soundCache = {};
@@ -135,5 +142,4 @@ class Sounds {
     }
 }
 
-const sounds = new Sounds();
-export default sounds;
+export const sounds = new Sounds();

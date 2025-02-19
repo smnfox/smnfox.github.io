@@ -4,6 +4,7 @@
             <img
                 src="../assets/avatar.jpg"
                 class="header__avatar"
+                alt="avatar"
             />
         </router-link>
         <div class="header__menu">
@@ -16,11 +17,66 @@
             >
                 {{ route.name }}
             </router-link>
+            <div
+              class="header__menu-link"
+              @click="toggleContacts"
+            >
+              Contacts
+            </div>
+            <div
+              v-show="contactsVisible"
+              class="header__contacts"
+              ref="contactsElem"
+            >
+              <div
+                v-for="contact in contacts"
+                @click="openUrl(contact.link)"
+                class="header__menu-link"
+              >
+                {{ contact.name }}
+              </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import {openUrl} from "../helpers.ts";
+import {ref, useTemplateRef} from "vue";
+import {onClickOutside} from "@vueuse/core";
+
+const contactsVisible = ref(false);
+const toggleContacts = (event: Event) => {
+  event.stopPropagation();
+  contactsVisible.value = !contactsVisible.value;
+};
+
+const contactsElem = useTemplateRef<HTMLElement>('contactsElem');
+onClickOutside(contactsElem, toggleContacts);
+
+interface Contact {
+  name: string
+  link: string
+}
+
+const contacts: Contact[] = [
+  {
+    name: 'telegram',
+    link: 'https://t.me/romanovalpm',
+  },
+  {
+    name: 'github',
+    link: 'https://github.com/smnfox',
+  },
+  {
+    name: 'email',
+    link: '',
+  },
+  {
+    name: 'pdf',
+    link: '',
+  },
+];
 </script>
 
 <style scoped lang="scss">
@@ -29,12 +85,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-    border: 1px solid #7da0ca;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 12px 12px;
     position: relative;
-    top: -2px;
-    box-shadow: 0 3px 1px -2px #0003, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
     &__avatar {
         overflow: hidden;
@@ -72,6 +126,16 @@
         &:hover {
             box-shadow: 0 2px 4px -1px #0003, 0 4px 5px 0 #00000024, 0 1px 10px 0 #0000001f;
         }
+    }
+
+    &__contacts {
+      position: absolute;
+      right: 8px;
+      top: 53px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 1;
     }
 }
 </style>

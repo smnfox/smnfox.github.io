@@ -7,12 +7,12 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import sounds from '../services/sounds';
+import { sounds } from '../services/sounds';
 import { getRandomInt } from '../helpers';
 
 const typeValue = ref('');
 const typeStatus = ref(false);
-const typingSpeed = 300;
+const typingSpeed = 100;
 const erasingSpeed = 100;
 const newTextDelay = 2000;
 const charIndex = ref(0);
@@ -32,7 +32,7 @@ const typeText = () => {
     typeValue.value += texts[textArrayIndex.value].charAt(charIndex.value);
     charIndex.value += 1;
 
-    sounds.playSound('click');
+    //sounds.playSound('click');
     typingTimeout.value = setTimeout(typeText, typingSpeed + getRandomInt(100));
   } else {
     typeStatus.value = false;

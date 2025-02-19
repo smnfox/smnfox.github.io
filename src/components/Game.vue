@@ -40,8 +40,7 @@ import WebGL from 'three/addons/capabilities/WebGL.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { onBeforeUnmount, onMounted, useTemplateRef, ref, type Ref } from 'vue';
 import RAPIER from '@dimforge/rapier3d-compat';
-import sounds from '../services/sounds';
-import { GAME_SOUNDS } from '../constants/sounds';
+import { GAME_SOUNDS, sounds } from '../services/sounds';
 import Button from "primevue/button";
 
 

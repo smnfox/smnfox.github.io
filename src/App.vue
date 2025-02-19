@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import MainMenu from './components/MainMenu.vue';
-import sounds from './services/sounds';
-import Contacts from './components/Contacts.vue';
+import { sounds } from './services/sounds';
+import Blob from "./assets/blob.svg";
 
 onBeforeMount(() => {
     sounds.muteOnVisibilityChange();
@@ -10,7 +10,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Contacts />
+    <Blob class="gradient" />
     <MainMenu class="menu" />
     <div class="content">
         <router-view />
@@ -30,5 +30,14 @@ onBeforeMount(() => {
     flex-direction: column;
     place-content: flex-start;
     gap: 24px;
+}
+
+.gradient {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: -1;
 }
 </style>

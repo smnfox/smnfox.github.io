@@ -2,7 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1;
   font-weight: 500;
-  color: #021024;
+  color: #0d0d0d;
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizelegibility;
@@ -14,7 +14,7 @@ body {
   margin: 0;
   display: flex;
   place-content: center;
-  background: linear-gradient(0deg, rgba(2 16 36 / 100%) 0%, rgba(84 131 179 / 100%) 50%, rgba(193 232 255 / 100%) 100%);
+  background-color: #F0F0F0;
 }
 
 #app {
@@ -26,4 +26,5 @@ body {
   display: flex;
   flex-direction: column;
   place-content: center;
+  gap: 40px;
 }
