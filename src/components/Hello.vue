@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TypedText from './TypedText.vue';
 import { Button } from 'primevue';
+import Skills from "./Skills.vue";
 
 const helloTexts = [
   'Привет!',
@@ -10,34 +11,58 @@ const helloTexts = [
 </script>
 
 <template>
-  <section class="screen-hello">
+  <section class="screen screen-hello">
     <div class="screen-hello__texts">
       <TypedText :texts="helloTexts" />
-      <p>Some cool introduction text</p>
+      <p>
+        <span>Пишу на Vue.js + Typescript, в коммерческой разработке с 2020 года</span>
+        <br/>
+        <span>Живу в Санкт-Петербурге, ищу удаленную работу</span>
+      </p>
       <div class="screen-hello__actions">
         <Button
           label="Резюме"
           icon="pi pi-file-pdf"
           icon-pos="right"
+          as="a"
+          href="/resume.pdf"
+          target="_blank"
+          raised
         />
         <Button
           label="Телеграм"
           icon="pi pi-telegram"
           icon-pos="right"
+          as="a"
+          href="https://t.me/romanovalpm"
+          target="_blank"
+          raised
         />
       </div>
     </div>
     <img
       src="../assets/emoji.webp"
       class="screen-hello__image"
+      alt="emoji"
     />
   </section>
-  <section class="screen-about">
-    out and about...
+  <section class="screen screen-skills">
+    <Skills />
+  </section>
+  <section class="screen screen-experience">
+    Тут про опыт работы
+  </section>
+  <section class="screen screen-about">
+    Тут общая инфа обо мне
   </section>
 </template>
 
 <style scoped lang="scss">
+.screen {
+  width: 100%;
+  padding: 0 24px;
+}
+
 .screen-hello {
   display: flex;
   justify-content: space-between;
@@ -48,7 +73,7 @@ const helloTexts = [
   &__texts {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 12px;
   }
 
   &__actions {

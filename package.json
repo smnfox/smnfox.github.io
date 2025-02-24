@@ -11,6 +11,8 @@
   "dependencies": {
     "@eslint/js": "^9.20.0",
     "@primevue/themes": "^4.2.5",
+    "@splidejs/splide": "^4.1.4",
+    "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@vueuse/core": "^12.7.0",
     "howler": "^2.2.4",
     "primeicons": "^7.0.0",
