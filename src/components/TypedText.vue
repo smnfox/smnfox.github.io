@@ -15,6 +15,7 @@ const typeStatus = ref(false);
 const typingSpeed = 100;
 const erasingSpeed = 100;
 const newTextDelay = 4000;
+const firstTextDelay = 200;
 const charIndex = ref(0);
 const textArrayIndex = ref(0);
 const typingTimeout = ref(0);
@@ -62,7 +63,7 @@ const eraseText = () => {
 };
 
 onMounted(() => {
-  typingTimeout.value = setTimeout(typeText, newTextDelay);
+  typingTimeout.value = setTimeout(typeText, firstTextDelay);
 });
 
 onBeforeUnmount(() => {

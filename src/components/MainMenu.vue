@@ -74,11 +74,11 @@ const contacts: Contact[] = [
   },
   {
     name: 'email',
-    link: '',
+    link: 'mailto:smnfox61@gmail.com',
   },
   {
     name: 'pdf',
-    link: '',
+    link: '/resume.pdf',
   },
 ];
 </script>

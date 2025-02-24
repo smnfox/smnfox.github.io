@@ -19,6 +19,7 @@
     "primevue": "^4.2.5",
     "three": "^0.172.0",
     "typescript-eslint": "^8.24.1",
+    "vanilla-tilt": "^1.8.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"

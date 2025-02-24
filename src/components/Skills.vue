@@ -45,7 +45,7 @@ onMounted(() => {
     pagination: false,
     autoWidth: true,
     autoScroll: {
-      speed: 0.5,
+      speed: 0.2,
     },
   });
   splide.mount({ AutoScroll });
@@ -92,14 +92,14 @@ const skills: Array<{name: string, image: Component | null}> = [
     name: 'Vite',
     image: LogoVite,
   },
-  {
-    name: 'Jest',
-    image: null,
-  },
-  {
-    name: 'Jquery',
-    image: null,
-  },
+  // {
+  //   name: 'Jest',
+  //   image: null,
+  // },
+  // {
+  //   name: 'Jquery',
+  //   image: null,
+  // },
   {
     name: 'Figma',
     image: LogoFigma,
@@ -108,22 +108,22 @@ const skills: Array<{name: string, image: Component | null}> = [
     name: 'WebStorm',
     image: LogoWebstorm,
   },
-  {
-    name: 'Axios',
-    image: null,
-  },
-  {
-    name: 'AntDesign',
-    image: null,
-  },
+  // {
+  //   name: 'Axios',
+  //   image: null,
+  // },
+  // {
+  //   name: 'AntDesign',
+  //   image: null,
+  // },
   {
     name: 'PrimeVue',
     image: LogoPrimevue,
   },
-  {
-    name: 'Responsive',
-    image: null,
-  },
+  // {
+  //   name: 'Responsive',
+  //   image: null,
+  // },
 ];
 </script>
 
