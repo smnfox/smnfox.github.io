@@ -21,7 +21,7 @@
               class="header__menu-link"
               @click="toggleContacts"
             >
-              Contacts
+              Контакты
             </div>
             <div
               v-show="contactsVisible"
@@ -69,12 +69,12 @@ const contacts: Contact[] = [
     link: 'https://t.me/romanovalpm',
   },
   {
-    name: 'github',
-    link: 'https://github.com/smnfox',
-  },
-  {
     name: 'email',
     link: 'mailto:smnfox61@gmail.com',
+  },
+  {
+    name: 'github',
+    link: 'https://github.com/smnfox',
   },
   {
     name: 'pdf',

@@ -31,7 +31,7 @@ import LogoGitlab from '../assets/logos/gitlab.svg';
 import LogoHtml from '../assets/logos/html5.svg';
 import LogoCss from '../assets/logos/css3.svg';
 import LogoSass from '../assets/logos/sass.svg';
-import LogoVite from '../assets/logos/vite.svg';
+import LogoVite from '../assets/logos/vite.svg?skipsvgo';
 import LogoFigma from '../assets/logos/figma.svg';
 import LogoWebstorm from '../assets/logos/webstorm.svg';
 import LogoPrimevue from '../assets/logos/primevue.svg';
@@ -129,6 +129,13 @@ const skills: Array<{name: string, image: Component | null}> = [
 
 <style scoped lang="scss">
 @import '@splidejs/splide/dist/css/splide-core.min.css';
+
+.splide {
+  position: absolute;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
 .skills {
   gap: 12px;

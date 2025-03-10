@@ -1,5 +1,5 @@
 <template>
-  <Divider />
+  <Divider class="page-footer-divider" />
   <footer class="page-footer">
     <span>Nadezhda Trenogina 2025</span>
     <a href="https://github.com/smnfox/portfolio">source code</a>
@@ -14,6 +14,10 @@ import { Divider } from 'primevue';
 .page-footer {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
+  margin-bottom: 40px;
+}
+
+.page-footer-divider {
+  margin: 0;
 }
 </style>

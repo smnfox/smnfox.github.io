@@ -43,8 +43,7 @@ import RAPIER from '@dimforge/rapier3d-compat';
 import { GAME_SOUNDS, sounds } from '../services/sounds';
 import Button from "primevue/button";
 
-
-const game = useTemplateRef('game');
+const game = useTemplateRef<HTMLCanvasElement>('game');
 
 const clock = new THREE.Clock();
 let time = 0;
@@ -54,18 +53,19 @@ let renderer: THREE.WebGLRenderer;
 let controls: OrbitControls;
 let world: RAPIER.World;
 let character: {
-    mesh: THREE.Object3D
-    collider: RAPIER.Collider
+  mesh: THREE.Object3D
+  collider: RAPIER.Collider
+  body: RAPIER.RigidBody
 };
 let characterController: RAPIER.KinematicCharacterController;
 const dynamicObjects: [THREE.Object3D, RAPIER.RigidBody][] = [];
 
 const inputs = {
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
-    up: false,
+  forward: false,
+  backward: false,
+  left: false,
+  right: false,
+  up: false,
 };
 const jumpSpeed = 12;
 const characterSpeed = 4;
@@ -78,15 +78,76 @@ let zForce = 0;
 const gameState: Ref<GameState> = ref('NotStarted');
 const score = ref(0);
 
+// Массив активных препятствий и пул для переиспользования мешей
+const obstacles: { mesh: THREE.Mesh, body: RAPIER.RigidBody }[] = [];
+const meshPool: THREE.Mesh[] = [];
+
+// Переиспользуемая геометрия и материал для препятствий
+const obstacleGeometry = new THREE.BoxGeometry(2, 2, 2);
+const obstacleMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+let obstacleTimer = 0;
+const obstacleSpawnInterval = 2; // Seconds
+
+const spawnObstacle = () => {
+  const xPos = (Math.random() - 0.5) * 18;
+  const zPos = -25;
+
+  // Переиспользуем меш из пула, если он есть
+  let mesh: THREE.Mesh;
+  if (meshPool.length > 0) {
+    mesh = meshPool.pop()!;
+  } else {
+    mesh = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+    mesh.castShadow = true;
+  }
+  mesh.position.set(xPos, 0, zPos);
+  scene.add(mesh);
+
+  // Создаем новый rigid body для препятствия
+  const body = world.createRigidBody(
+    RAPIER.RigidBodyDesc.dynamic().setTranslation(xPos, 0, zPos).setCanSleep(false)
+  );
+  const cubeShape = RAPIER.ColliderDesc.cuboid(1, 1, 1).setMass(1);
+  world.createCollider(cubeShape, body);
+
+  obstacles.push({ mesh, body });
+};
+
+const updateObstacles = (deltaTime: number) => {
+  obstacleTimer += deltaTime;
+  if (obstacleTimer > obstacleSpawnInterval) {
+    spawnObstacle();
+    obstacleTimer = 0;
+  }
+
+  // Обходим массив в обратном порядке для безопасного удаления элементов
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    const { mesh, body } = obstacles[i];
+    // Кэшируем значение трансляции rigid body
+    const translation = body.translation();
+    const newZ = translation.z + deltaTime * 5;
+    body.setTranslation({ x: translation.x, y: translation.y, z: newZ }, true);
+    mesh.position.copy(body.translation());
+
+    // Если препятствие вышло за пределы сцены, удаляем его и добавляем меш в пул для переиспользования
+    if (body.translation().z > 30) {
+      scene.remove(mesh);
+      world.removeRigidBody(body);
+      obstacles.splice(i, 1);
+      meshPool.push(mesh);
+    }
+  }
+};
+
 type GameState = 'NotStarted' | 'Paused' | 'GameOver' | 'InProgress';
 
 const togglePause = () => {
-    if (gameState.value === 'Paused') {
-        gameState.value = 'InProgress';
-        renderGame();
-    } else {
-        gameState.value = 'Paused';
-    }
+  if (gameState.value === 'Paused') {
+    gameState.value = 'InProgress';
+    renderGame();
+  } else {
+    gameState.value = 'Paused';
+  }
 };
 
 const onKeyDown = (event: KeyboardEvent) => {
@@ -191,31 +252,24 @@ const initGraphics = () => {
 };
 
 const initObjects = () => {
-    const floorMesh = new THREE.Mesh(new THREE.BoxGeometry(20, 1, 50), new THREE.MeshPhongMaterial());
-    floorMesh.receiveShadow = true;
-    floorMesh.position.y = -1;
-    scene.add(floorMesh);
-    const floorBody = world.createRigidBody(RAPIER.RigidBodyDesc.fixed().setTranslation(0, -1, 0));
-    const floorShape = RAPIER.ColliderDesc.cuboid(10, 0.5, 25);
-    world.createCollider(floorShape, floorBody);
+  const floorMesh = new THREE.Mesh(new THREE.BoxGeometry(20, 1, 50), new THREE.MeshPhongMaterial());
+  floorMesh.receiveShadow = true;
+  floorMesh.position.y = -1;
+  scene.add(floorMesh);
+  const floorBody = world.createRigidBody(RAPIER.RigidBodyDesc.fixed().setTranslation(0, -1, 0));
+  const floorShape = RAPIER.ColliderDesc.cuboid(10, 0.5, 25);
+  world.createCollider(floorShape, floorBody);
 
-    const cubeMesh = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), new THREE.MeshStandardMaterial({color: 0xff0000}));
-    cubeMesh.castShadow = true;
-    scene.add(cubeMesh);
-    const cubeBody = world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(0, 0, -10).setCanSleep(false));
-    const cubeShape = RAPIER.ColliderDesc.cuboid(1, 1, 1).setMass(1).setRestitution(1.1);
-    world.createCollider(cubeShape, cubeBody);
-    dynamicObjects.push([cubeMesh, cubeBody]);
-
-    const sphereMesh = new THREE.Mesh(new THREE.SphereGeometry(), new THREE.MeshNormalMaterial());
-    sphereMesh.castShadow = true;
-    scene.add(sphereMesh);
-    const sphereBody = world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 5, 5));
-    const sphereShape = RAPIER.ColliderDesc.ball(1).setMass(1).setRestitution(1.1);
-    character =  {
-        mesh: sphereMesh,
-        collider: world.createCollider(sphereShape, sphereBody),
-    };
+  const sphereMesh = new THREE.Mesh(new THREE.SphereGeometry(), new THREE.MeshNormalMaterial());
+  sphereMesh.castShadow = true;
+  scene.add(sphereMesh);
+  const sphereBody = world.createRigidBody(RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 5, 5));
+  const sphereShape = RAPIER.ColliderDesc.ball(1).setMass(1).setRestitution(1.1);
+  character =  {
+    mesh: sphereMesh,
+    collider: world.createCollider(sphereShape, sphereBody),
+    body: sphereBody,
+  };
 };
 
 const initPhysics = async () => {
@@ -224,8 +278,6 @@ const initPhysics = async () => {
     world = new RAPIER.World(gravity);
 
     characterController = world.createCharacterController(characterOffset);
-    characterController.enableAutostep(0.5, 0.2, true);
-    characterController.enableSnapToGround(0.5);
 };
 
 const gameEnd = () => {
@@ -233,21 +285,30 @@ const gameEnd = () => {
 };
 
 const gameRestart = () => {
-    time = 0;
-    score.value = 0;
-    yForce = 0;
-    xForce = 0;
-    zForce = 0;
-    gameState.value = 'InProgress';
+  time = 0;
+  score.value = 0;
+  yForce = 0;
+  xForce = 0;
+  zForce = 0;
+  gameState.value = 'InProgress';
 
-    character.collider.parent()?.setNextKinematicTranslation({
-        x: 0,
-        y: 5,
-        z: 5,
-    });
-    character.mesh.position.copy(character.collider.parent().translation());
-    character.mesh.quaternion.copy(character.collider.parent().rotation());
-    requestAnimationFrame(renderGame);
+  character.collider.parent()?.setNextKinematicTranslation({
+    x: 0,
+    y: 5,
+    z: 5,
+  });
+  character.mesh.position.copy(character.body.translation());
+  character.mesh.quaternion.copy(character.body.rotation());
+
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    const { mesh, body } = obstacles[i];
+    scene.remove(mesh);
+    world.removeRigidBody(body);
+    obstacles.splice(i, 1);
+    meshPool.push(mesh);
+  }
+
+  requestAnimationFrame(renderGame);
 };
 
 const handleInput = (deltaTime: number) => {
@@ -318,15 +379,15 @@ const handleInput = (deltaTime: number) => {
     characterController.computeColliderMovement(character.collider, characterVelocity);
 
     const nextTranslation = new THREE.Vector3();
-    nextTranslation.copy(character.collider.parent().translation());
+    nextTranslation.copy(character.body.translation());
     nextTranslation.add(characterController.computedMovement());
 
     character.collider.parent()?.setNextKinematicTranslation(nextTranslation);
-    character.mesh.position.copy(character.collider.parent().translation());
-    character.mesh.quaternion.copy(character.collider.parent().rotation());
+    character.mesh.position.copy(character.body.translation());
+    character.mesh.quaternion.copy(character.body.rotation());
 
     // Check collisions
-    for (var i = 0; i < characterController.numComputedCollisions(); i++) {
+    for (let i = 0; i < characterController.numComputedCollisions(); i++) {
         let collision = characterController.computedCollision(i);
         if (collision?.collider?.parent()?.bodyType() === 0) {
             // floor body type - 1
@@ -340,51 +401,52 @@ const handleInput = (deltaTime: number) => {
 };
 
 const renderGame = () => {
-    if (gameState.value !== 'InProgress') {
-        return;
-    }
-	requestAnimationFrame(renderGame);
+  if (gameState.value !== 'InProgress') {
+    return;
+  }
+  requestAnimationFrame(renderGame);
 
-    // Don't go below 30 Hz to prevent spiral of death
-    let deltaTime = clock.getDelta();
-    deltaTime = Math.min(deltaTime, 1.0 / 30.0);
+  // Don't go below 30 Hz to prevent spiral of death
+  let deltaTime = clock.getDelta();
+  deltaTime = Math.min(deltaTime, 1.0 / 30.0);
 
-    world.timestep = Math.min(deltaTime, 0.1);
-    world.step();
+  world.timestep = Math.min(deltaTime, 0.1);
+  world.step();
 
-    handleInput(deltaTime);
+  handleInput(deltaTime);
+  updateObstacles(deltaTime);
 
-    for (let i = 0, n = dynamicObjects.length; i < n; i++) {
-        dynamicObjects[i][0].position.copy(dynamicObjects[i][1].translation());
-        dynamicObjects[i][0].quaternion.copy(dynamicObjects[i][1].rotation());
-    }
+  for (let i = 0, n = dynamicObjects.length; i < n; i++) {
+    dynamicObjects[i][0].position.copy(dynamicObjects[i][1].translation());
+    dynamicObjects[i][0].quaternion.copy(dynamicObjects[i][1].rotation());
+  }
 
-    time += deltaTime;
-    score.value = Number(time.toFixed());
-    controls.update(deltaTime);
-    renderer.render(scene, camera);
+  time += deltaTime;
+  score.value = Number(time.toFixed());
+  controls.update(deltaTime);
+  renderer.render(scene, camera);
 };
 
 onMounted(async () => {
-    if (!game.value) {
-        throw new Error('No game container');
-    }
+  if (!game.value) {
+    throw new Error('No game container');
+  }
 
-	if (!WebGL.isWebGL2Available()) {
-		const warning = WebGL.getWebGLErrorMessage();
-		game.value.appendChild(warning);
-        return;
-	}
+  if (!WebGL.isWebGL2Available()) {
+    const warning = WebGL.getWebGLErrorMessage();
+    game.value.appendChild(warning);
+    return;
+  }
 
-    await initPhysics();
-    initGraphics();
-    initObjects();
-    renderGame();
+  await initPhysics();
+  initGraphics();
+  initObjects();
+  renderGame();
 
-    sounds.preloadSounds(GAME_SOUNDS);
+  sounds.preloadSounds(GAME_SOUNDS);
 
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
+  window.addEventListener('keydown', onKeyDown);
+  window.addEventListener('keyup', onKeyUp);
 });
 
 onBeforeUnmount(() => {

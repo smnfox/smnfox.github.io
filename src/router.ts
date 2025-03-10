@@ -8,22 +8,22 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: 'hello',
+      name: 'Главная',
       path: '/',
       component: Hello,
     },
     {
-      name: 'projects',
+      name: 'Проекты',
       path: '/projects',
       component: Projects,
     },
     {
-      name: 'examples',
+      name: 'Примеры кода',
       path: '/code-examples',
       component: Examples,
     },
     {
-      name: 'game',
+      name: 'Мини игра',
       path: '/game',
       component: Game,
     },
