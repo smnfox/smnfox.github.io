@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import Splide from '@splidejs/splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
-import {type Component, onMounted} from "vue";
+import {type Component, onMounted} from 'vue';
 import LogoJs from '../assets/logos/javascript.svg';
 import LogoVue from '../assets/logos/vue.svg';
 import LogoTs from '../assets/logos/typescript.svg';

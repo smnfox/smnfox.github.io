@@ -11,13 +11,14 @@
     <img
       :src='project.image'
       class='project__image'
+      :alt="project.name"
     />
   </div>
 </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, useTemplateRef } from 'vue';
+import {onMounted, onUnmounted, type ShallowRef, useTemplateRef} from 'vue';
 import { openUrl } from '../helpers';
 import VanillaTilt from 'vanilla-tilt';
 
@@ -40,14 +41,14 @@ const projects: Project[] = [
   },
 ];
 
-const projectCards = useTemplateRef('projectCards');
+const projectCards: ShallowRef<Array<any> | null> = useTemplateRef('projectCards');
 
 onMounted(() => {
   VanillaTilt.init(projectCards.value);
 });
 
 onUnmounted(() => {
-  projectCards.value.forEach((card: HTMLElement) => {
+  projectCards.value?.forEach((card) => {
     card.vanillaTilt.destroy();
   });
 });

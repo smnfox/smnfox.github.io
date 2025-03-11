@@ -13,7 +13,7 @@
                 :key="route.path"
                 :to="route.path"
                 class="header__menu-link"
-                :class="{ 'menu__link--active': route.path === $router.currentRoute.path }"
+                :class="{ 'menu__link--active': route.path === $route.path }"
             >
                 {{ route.name }}
             </router-link>

@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { sounds } from '../services/sounds';
+// import { sounds } from '../services/sounds';
 import { getRandomInt } from '../helpers';
 
 const typeValue = ref('');
@@ -20,7 +20,7 @@ const charIndex = ref(0);
 const textArrayIndex = ref(0);
 const typingTimeout = ref(0);
 
-const { texts } = defineProps({
+const { texts = [] } = defineProps({
   texts: Array<String>
 });
 
