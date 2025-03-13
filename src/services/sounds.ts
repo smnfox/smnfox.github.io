@@ -18,7 +18,7 @@ class Sounds {
     private localVolume: number = 0.1;
 
     constructor() {
-      this.soundCache = {};
+      this.soundCache = {} as SoundCache;
     }
 
     public loadSound(key: SoundKey): Promise<Sound | null> {
