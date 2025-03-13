@@ -1,8 +1,8 @@
 {
-  "name": "portfolio",
+  "name": "smnfox.github.io",
   "private": false,
   "version": "0.0.1",
-  "homepage": "https://smnfox.github.io/portfolio",
+  "homepage": "https://smnfox.github.io",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
