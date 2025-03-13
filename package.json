@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@eslint/js": "^9.20.0",
@@ -22,7 +24,8 @@
     "vanilla-tilt": "^1.8.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.0",
+    "gh-pages": "^6.1.1"
   },
   "devDependencies": {
     "@dimforge/rapier3d-compat": "^0.14.0",
