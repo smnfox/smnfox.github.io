@@ -2,8 +2,10 @@
 import { onBeforeMount } from 'vue';
 import MainMenu from './components/MainMenu.vue';
 import { sounds } from './services/sounds';
-import Blob from "./assets/blob.svg";
+import Blob from './assets/blob.svg';
 import PageFooter from './components/PageFooter.vue';
+import DynamicDialog from 'primevue/dynamicdialog';
+
 
 onBeforeMount(() => {
     sounds.muteOnVisibilityChange();
@@ -11,19 +13,19 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <Blob class="gradient" />
-    <MainMenu class="menu" />
-    <div class="content">
-        <router-view />
-    </div>
-    <PageFooter />
+  <Blob class="gradient" />
+  <MainMenu class="menu" />
+  <div class="content">
+    <router-view />
+  </div>
+  <PageFooter />
+  <DynamicDialog />
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import 'primeicons/primeicons.css';
 
 .menu {
-    width: 100%;
     flex-shrink: 0;
 }
 
@@ -34,6 +36,7 @@ onBeforeMount(() => {
     flex-direction: column;
     place-content: flex-start;
     gap: 24px;
+    margin-top: 60px;
 }
 
 .gradient {

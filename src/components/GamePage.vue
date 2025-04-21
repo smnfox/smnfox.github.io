@@ -1,37 +1,41 @@
 <template>
-    <div class="game__wrapper">
-        <div
-            class="game__container"
-            ref="game"
-        />
-        <div
-            v-if="gameState !== 'NotStarted'"
-            class="game__score"
-        >
-            {{ score }}
-        </div>
-        <div
-            v-if="gameState === 'Paused'"
-            class="game__pause game__overlay"
-        >
-            PAUSE
-        </div>
-        <div
-            v-if="gameState === 'GameOver'"
-            class="game__over game__overlay"
-        >
-            Defeat.
-            Your score:
-            <span>{{ score }}</span>
-            <Button @click="gameRestart">Restart</Button>
-        </div>
-        <div
-            v-if="gameState === 'NotStarted'"
-            class="game__start game__overlay"
-        >
-            <Button @click="gameRestart">Start game</Button>
-        </div>
+  <div class="game__wrapper">
+    <div
+      ref="game"
+      class="game__container"
+    />
+    <div
+      v-if="gameState !== 'NotStarted'"
+      class="game__score"
+    >
+      {{ score }}
     </div>
+    <div
+      v-if="gameState === 'Paused'"
+      class="game__pause game__overlay"
+    >
+      PAUSE
+    </div>
+    <div
+      v-if="gameState === 'GameOver'"
+      class="game__over game__overlay"
+    >
+      Defeat.
+      Your score:
+      <span>{{ score }}</span>
+      <Button @click="gameRestart">
+        Restart
+      </Button>
+    </div>
+    <div
+      v-if="gameState === 'NotStarted'"
+      class="game__start game__overlay"
+    >
+      <Button @click="gameRestart">
+        Start game
+      </Button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -41,7 +45,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { onBeforeUnmount, onMounted, useTemplateRef, ref, type Ref } from 'vue';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { GAME_SOUNDS, sounds } from '../services/sounds';
-import Button from "primevue/button";
+import Button from 'primevue/button';
 
 const game = useTemplateRef<HTMLCanvasElement>('game');
 
@@ -105,7 +109,7 @@ const spawnObstacle = () => {
 
   // Создаем новый rigid body для препятствия
   const body = world.createRigidBody(
-    RAPIER.RigidBodyDesc.dynamic().setTranslation(xPos, 0, zPos).setCanSleep(false)
+    RAPIER.RigidBodyDesc.dynamic().setTranslation(xPos, 0, zPos).setCanSleep(false),
   );
   const cubeShape = RAPIER.ColliderDesc.cuboid(1, 1, 1).setMass(1);
   world.createCollider(cubeShape, body);
@@ -214,7 +218,7 @@ const onWindowResize = () => {
     camera.updateProjectionMatrix();
 
     renderer.setSize(game.value.offsetWidth, game.value.offsetHeight);
-}
+};
 
 const initGraphics = () => {
     if (!game.value) {
@@ -388,7 +392,7 @@ const handleInput = (deltaTime: number) => {
 
     // Check collisions
     for (let i = 0; i < characterController.numComputedCollisions(); i++) {
-        let collision = characterController.computedCollision(i);
+        const collision = characterController.computedCollision(i);
         if (collision?.collider?.parent()?.bodyType() === 0) {
             // floor body type - 1
             // anything else body type - 0

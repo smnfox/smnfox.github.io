@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <span class="typed-text">{{ typeValue }}</span>
-    <span class="cursor" :class="{'typing': typeStatus}">&nbsp;</span>
+    <span
+      class="cursor"
+      :class="{'typing': typeStatus}"
+    >&nbsp;</span>
   </div>
 </template>
 
@@ -21,7 +24,7 @@ const textArrayIndex = ref(0);
 const typingTimeout = ref(0);
 
 const { texts = [] } = defineProps({
-  texts: Array<String>
+  texts: Array<string>,
 });
 
 const typeText = () => {

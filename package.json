@@ -3,12 +3,14 @@
   "private": false,
   "version": "0.0.1",
   "homepage": "https://smnfox.github.io",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint": "eslint --fix"
   },
   "dependencies": {
     "@eslint/js": "^9.20.0",
@@ -16,7 +18,9 @@
     "@splidejs/splide": "^4.1.4",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@vueuse/core": "^12.7.0",
+    "gh-pages": "^6.1.1",
     "howler": "^2.2.4",
+    "plural-ru": "^2.0.2",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
     "three": "^0.172.0",
@@ -24,11 +28,11 @@
     "vanilla-tilt": "^1.8.1",
     "vite-svg-loader": "^5.1.0",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.0",
-    "gh-pages": "^6.1.1"
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@dimforge/rapier3d-compat": "^0.14.0",
+    "@stylistic/eslint-plugin": "^4.2.0",
     "@types/howler": "^2.2.12",
     "@types/three": "^0.173.0",
     "@typescript-eslint/eslint-plugin": "^8.21.0",
@@ -38,6 +42,7 @@
     "eslint": "^9.20.1",
     "eslint-config-typescript": "^3.0.0",
     "eslint-plugin-vue": "^9.32.0",
+    "globals": "^15.15.0",
     "sass-embedded": "^1.83.4",
     "stylelint": "^16.14.1",
     "stylelint-config-standard": "^37.0.0",

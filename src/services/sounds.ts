@@ -1,13 +1,13 @@
 
-import { tryOnBeforeUnmount } from "@vueuse/core";
-import { Howl } from "howler";
-import type { Sound, SoundCache, SoundKey } from "../types/sounds";
+import { tryOnBeforeUnmount } from '@vueuse/core';
+import { Howl } from 'howler';
+import type { Sound, SoundCache, SoundKey } from '../types/sounds';
 
 export const SOUND_MAP = {
   jump: '/sounds/jump.wav',
   defeat: '/sounds/defeat.wav',
   click: '/sounds/click.wav',
-}
+};
 export const GAME_SOUNDS: SoundKey[] = ['jump', 'defeat'];
 const MAX_DELAY_BEFORE_PLAY = 2000;
 
@@ -137,9 +137,9 @@ class Sounds {
           const promiseList = list.map(item => this.loadSound(item));
           await Promise.all(promiseList);
         } catch (error) {
-          console.error(`Failed to preload sounds:`, error);
+          console.error('Failed to preload sounds:', error);
         }
-    }
+    };
 }
 
 export const sounds = new Sounds();

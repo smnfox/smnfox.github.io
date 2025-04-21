@@ -4,6 +4,7 @@
       <ul class="splide__list skills">
         <li
           v-for="skill in skills"
+          :key="skill.name"
           class="splide__slide skills__card"
         >
           <component

@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Game from './components/Game.vue';
-import Examples from './components/Examples.vue';
-import Hello from './components/Hello.vue';
-import Projects from './components/Projects.vue';
+import GamePage from './components/GamePage.vue';
+import ExamplesPage from './components/ExamplesPage.vue';
+import HelloPage from './components/HelloPage.vue';
+import ProjectsPage from './components/ProjectsPage.vue';
 
 export default createRouter({
   history: createWebHistory(),
@@ -10,22 +10,22 @@ export default createRouter({
     {
       name: 'Главная',
       path: '/',
-      component: Hello,
+      component: HelloPage,
     },
     {
       name: 'Проекты',
       path: '/projects',
-      component: Projects,
+      component: ProjectsPage,
     },
     {
       name: 'Примеры кода',
       path: '/code-examples',
-      component: Examples,
+      component: ExamplesPage,
     },
     {
       name: 'Мини игра',
       path: '/game',
-      component: Game,
+      component: GamePage,
     },
   ],
 });

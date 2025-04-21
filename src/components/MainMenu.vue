@@ -1,49 +1,55 @@
 <template>
-    <div class="header">
-        <router-link to="/">
-            <img
-                src="../assets/avatar.jpg"
-                class="header__avatar"
-                alt="avatar"
-            />
-        </router-link>
-        <div class="header__menu">
-            <router-link
-                v-for="route in $router.options.routes"
-                :key="route.path"
-                :to="route.path"
-                class="header__menu-link"
-                :class="{ 'menu__link--active': route.path === $route.path }"
-            >
-                {{ route.name }}
-            </router-link>
-            <div
-              class="header__menu-link"
-              @click="toggleContacts"
-            >
-              Контакты
-            </div>
-            <div
-              v-show="contactsVisible"
-              class="header__contacts"
-              ref="contactsElem"
-            >
-              <div
-                v-for="contact in contacts"
-                @click="openUrl(contact.link)"
-                class="header__menu-link"
-              >
-                {{ contact.name }}
-              </div>
-            </div>
-        </div>
+  <div class="header">
+    <router-link to="/">
+      <img
+        src="../assets/avatar.jpg"
+        class="header__avatar"
+        alt="avatar"
+      >
+    </router-link>
+    <div class="header__menu">
+      <Button
+        v-for="route in $router.options.routes"
+        :key="route.path"
+        v-slot="slotProps"
+        as-child
+        raised
+      >
+        <RouterLink
+          :to="route.path"
+          :class="slotProps.class"
+        >
+          {{ route.name }}
+        </RouterLink>
+      </Button>
+      <Button
+        label="Контакты"
+        raised
+        @click="toggleContacts"
+      />
+      <div
+        v-show="contactsVisible"
+        ref="contactsElem"
+        class="header__contacts"
+      >
+        <Button
+          v-for="contact in contactsList"
+          :key="contact.name"
+          :label="contact.name"
+          raised
+          @click="openUrl(contact.link)"
+        />
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {openUrl} from "../helpers.ts";
-import {ref, useTemplateRef} from "vue";
-import {onClickOutside} from "@vueuse/core";
+import {openUrl} from '../helpers.ts';
+import {ref, useTemplateRef} from 'vue';
+import {onClickOutside} from '@vueuse/core';
+import {Button} from 'primevue';
+import {contacts} from '../constants';
 
 const contactsVisible = ref(false);
 const toggleContacts = (event: Event) => {
@@ -63,10 +69,10 @@ interface Contact {
   link: string
 }
 
-const contacts: Contact[] = [
+const contactsList: Contact[] = [
   {
     name: 'telegram',
-    link: 'https://t.me/romanovalpm',
+    link: contacts.telegram,
   },
   {
     name: 'email',
@@ -89,10 +95,15 @@ const contacts: Contact[] = [
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 0 0 12px 12px;
-    position: relative;
+    border-radius: 0 0 var(--p-border-radius-xl) var(--p-border-radius-xl);
+    position: fixed;
+    top: 0;
+    width: calc(100% - 20px);
+    max-width: 1060px;
     background: rgba(255, 255, 255, 0.25);
     border: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 1;
+    backdrop-filter: blur(8px);
 
     &__avatar {
         overflow: hidden;
@@ -109,27 +120,6 @@ const contacts: Contact[] = [
         justify-content: flex-end;
         align-items: center;
         gap: 4px;
-    }
-
-    &__menu-link {
-        padding: 8px 16px;
-        cursor: pointer;
-        color: #021024;
-        display: flex;
-        place-content: center;
-        border-radius: 4px;
-        word-break: break-word;
-        text-decoration: none;
-        text-transform: uppercase;
-        background-color: #ffffff;
-        box-shadow: 0 3px 1px -2px #0003, 0 2px 2px 0 #00000024, 0 1px 5px 0 #0000001f;
-        font-size: 14px;
-        font-weight: 500;
-        transition: box-shadow .3s;
-
-        &:hover {
-            box-shadow: 0 2px 4px -1px #0003, 0 4px 5px 0 #00000024, 0 1px 10px 0 #0000001f;
-        }
     }
 
     &__contacts {
