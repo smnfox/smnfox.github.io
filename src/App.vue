@@ -13,23 +13,23 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <Blob class="gradient" />
-  <MainMenu class="menu" />
-  <div class="content">
+  <Blob class="app-gradient" />
+  <MainMenu class="app-menu" />
+  <div class="app-content">
     <router-view />
   </div>
   <PageFooter />
   <DynamicDialog />
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import 'primeicons/primeicons.css';
 
-.menu {
+.app-menu {
     flex-shrink: 0;
 }
 
-.content {
+.app-content {
     width: 100%;
     flex-grow: 1;
     display: flex;
@@ -39,7 +39,7 @@ onBeforeMount(() => {
     margin-top: 60px;
 }
 
-.gradient {
+.app-gradient {
   width: 100%;
   position: absolute;
   top: 0;
