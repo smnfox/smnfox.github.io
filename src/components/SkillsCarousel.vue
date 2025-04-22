@@ -5,14 +5,20 @@
         <li
           v-for="skill in skills"
           :key="skill.name"
-          class="splide__slide skills__card"
+          class="splide__slide"
         >
-          <component
-            :is="skill.image"
-            v-if="skill.image"
-            class="skills__image"
-          />
-          {{ skill.name }}
+          <Card>
+            <template #content>
+              <component
+                :is="skill.image"
+                v-if="skill.image"
+                class="skills__image"
+              />
+            </template>
+            <template #footer>
+              {{ skill.name }}
+            </template>
+          </Card>
         </li>
       </ul>
     </div>
@@ -36,6 +42,7 @@ import LogoVite from '../assets/logos/vite.svg?skipsvgo';
 import LogoFigma from '../assets/logos/figma.svg';
 import LogoWebstorm from '../assets/logos/webstorm.svg';
 import LogoPrimevue from '../assets/logos/primevue.svg';
+import {Card} from 'primevue';
 
 onMounted(() => {
   const splide = new Splide( '.splide', {
@@ -136,19 +143,18 @@ const skills: Array<{name: string, image: Component | null}> = [
   width: 100vw;
   left: 50%;
   transform: translateX(-50%);
+
+  &__track {
+    padding: 10px 0;
+  }
 }
 
 .skills {
   gap: 12px;
+  text-align: center;
+}
 
-  &__card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 10px;
-    gap: 10px;
-  }
+:deep(.p-card-body) {
+  padding: 8px;
 }
 </style>

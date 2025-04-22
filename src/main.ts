@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config';
 import { definePreset, palette } from '@primevue/themes';
 import Aura from '@primevue/themes/aura';
 import DialogService from 'primevue/dialogservice';
+import {useStorage} from '@vueuse/core';
 
 const primeVueOptions = {
   theme: {
@@ -17,10 +18,16 @@ const primeVueOptions = {
         primary: palette('{violet}'),
         colorScheme: {
           light: {
-            surface: palette('{zinc}'),
+            primary: {
+              color: '{violet.400}',
+            },
+            surface: palette('{slate}'),
           },
           dark: {
-            surface: palette('{slate}'),
+            primary: {
+              color: '{violet.600}',
+            },
+            surface: palette('{zinc}'),
           },
         },
       },
@@ -29,3 +36,8 @@ const primeVueOptions = {
 };
 
 createApp(App).use(router).use(PrimeVue, primeVueOptions).use(DialogService).mount('#app');
+
+const darkMode = useStorage('dark-mode', false);
+if (darkMode.value) {
+  document.documentElement.classList.add('portfolio-dark');
+}

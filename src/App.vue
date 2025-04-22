@@ -6,7 +6,6 @@ import Blob from './assets/blob.svg';
 import PageFooter from './components/PageFooter.vue';
 import DynamicDialog from 'primevue/dynamicdialog';
 
-
 onBeforeMount(() => {
     sounds.muteOnVisibilityChange();
 });

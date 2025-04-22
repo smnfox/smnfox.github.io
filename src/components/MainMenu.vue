@@ -9,11 +9,15 @@
     </router-link>
     <div class="header__menu">
       <Button
+        :icon="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
+        @click="toggleDarkMode"
+      />
+      <Divider layout="vertical" />
+      <Button
         v-for="route in $router.options.routes"
         :key="route.path"
         v-slot="slotProps"
         as-child
-        raised
       >
         <RouterLink
           :to="route.path"
@@ -24,7 +28,6 @@
       </Button>
       <Button
         label="Контакты"
-        raised
         @click="toggleContacts"
       />
       <div
@@ -47,8 +50,8 @@
 <script setup lang="ts">
 import {openUrl} from '../helpers.ts';
 import {ref, useTemplateRef} from 'vue';
-import {onClickOutside} from '@vueuse/core';
-import {Button} from 'primevue';
+import {onClickOutside, useStorage} from '@vueuse/core';
+import {Button, Divider} from 'primevue';
 import {contacts} from '../constants';
 
 const contactsVisible = ref(false);
@@ -87,6 +90,12 @@ const contactsList: Contact[] = [
     link: '/resume.pdf',
   },
 ];
+
+const darkMode = useStorage('dark-mode', false);
+const toggleDarkMode = () => {
+  darkMode.value = !darkMode.value;
+  document.documentElement.classList.toggle('portfolio-dark');
+};
 </script>
 
 <style scoped lang="scss">

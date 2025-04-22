@@ -84,14 +84,14 @@ onBeforeUnmount(() => {
     font-weight: 700;
 
     span.typed-text {
-      color: #021024;
+      color: var(--p-text-color);
     }
 
     span.cursor {
       display: inline-block;
       margin-left: 3px;
       width: 4px;
-      background-color: #021024;
+      background-color: var(--p-text-color);
       animation: cursorBlink 1s infinite;
     }
 
@@ -101,7 +101,7 @@ onBeforeUnmount(() => {
   }
 
   @keyframes cursorBlink {
-    49% { background-color: #021024; }
+    49% { background-color: var(--p-text-color) }
     50% { background-color: transparent; }
     99% { background-color: transparent; }
   }

@@ -1,5 +1,5 @@
 <template>
-  <h1>Проекты, над которыми я работала</h1>
+  <h2>Проекты, над которыми я работала</h2>
   <div class="projects">
     <div
       v-for="project in projects"
@@ -102,12 +102,13 @@ onUnmounted(() => {
 }
 
 .project {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--p-card-background);
+  color: var(--p-card-color);
   border-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--p-card-shadow);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 12px;
+  padding: var(--p-card-body-padding);
   gap: 12px;
   display: flex;
   flex-direction: column;

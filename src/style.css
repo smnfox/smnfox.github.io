@@ -2,7 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: normal;
   font-weight: 500;
-  color: #0d0d0d;
+  color: var(--p-text-color);
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizelegibility;
@@ -14,7 +14,7 @@ body {
   margin: 0;
   display: flex;
   place-content: center;
-  background-color: #F0F0F0;
+  background-color: var(--ground-background);
 }
 
 #app {
@@ -31,4 +31,12 @@ body {
 
 a {
   text-decoration: none;
+}
+
+.portfolio-dark img {
+  filter: brightness(80%);
+}
+
+h1, h2 {
+  margin: 0;
 }
