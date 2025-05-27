@@ -5,6 +5,7 @@ import { sounds } from './services/sounds';
 import Blob from './assets/blob.svg';
 import PageFooter from './components/PageFooter.vue';
 import DynamicDialog from 'primevue/dynamicdialog';
+import MobileMenu from './components/MobileMenu.vue';
 
 onBeforeMount(() => {
     sounds.muteOnVisibilityChange();
@@ -14,6 +15,7 @@ onBeforeMount(() => {
 <template>
   <Blob class="app-gradient" />
   <MainMenu class="app-menu" />
+  <MobileMenu class="app-menu" />
   <div class="app-content">
     <router-view />
   </div>
@@ -22,6 +24,7 @@ onBeforeMount(() => {
 </template>
 
 <style lang="scss">
+@use 'styles/breakpoints' as *;
 @import 'primeicons/primeicons.css';
 
 .app-menu {
@@ -45,5 +48,25 @@ onBeforeMount(() => {
   left: 50%;
   transform: translateX(-50%);
   z-index: -1;
+}
+
+.portfolio-dark .p-button {
+  color: #ffffff;
+}
+
+.mobile-only {
+  @include break-to(s) using($br-name) {
+    display: flex;
+  }
+
+  display: none;
+}
+
+.pc-only {
+  @include break-to(s) using($br-name) {
+    display: none;
+  }
+
+  display: flex;
 }
 </style>

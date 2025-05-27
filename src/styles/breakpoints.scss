@@ -1,0 +1,29 @@
+$breakpoints: (s: 320px, m: 500px, l: 800px);
+
+// 0 <= w <= 500
+$s-br: ('min-width':  0, 'max-width': map-get($breakpoints, 'm'));
+// 500 <= w <= 800
+$m-br: ('min-width':  map-get($breakpoints, 'm'), 'max-width': map-get($breakpoints, 'l'));
+// 800 <= w <= Infinity
+$l-br: ('min-width':  map-get($breakpoints, 'l'));
+
+$breaks: ('s': $s-br, 'm': $m-br,'l': $l-br );
+
+@mixin break-to($breakpoint-names...) {
+  @each $br-name in $breakpoint-names {
+    $min-width: map-get(map-get($breaks, $br-name), 'min-width');
+    $max-width: map-get(map-get($breaks, $br-name), 'max-width') - 1;
+
+    @if ($br-name == 'l') {
+      @media (min-width: $min-width) {
+        @content($br-name);
+      }
+    }
+
+    @else {
+      @media (max-width: $max-width) and (min-width: $min-width) {
+        @content($br-name);
+      }
+    }
+  }
+}

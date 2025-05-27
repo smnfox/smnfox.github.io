@@ -10,16 +10,25 @@ export default createRouter({
       name: 'Главная',
       path: '/',
       component: HelloPage,
+      meta: {
+        icon: 'home',
+      },
     },
-    {
-      name: 'Примеры кода',
-      path: '/code-examples',
-      component: ExamplesPage,
-    },
+    // {
+    //   name: 'Примеры кода',
+    //   path: '/code-examples',
+    //   component: ExamplesPage,
+    //   meta: {
+    //     icon: 'code',
+    //   },
+    // },
     {
       name: 'Мини игра',
       path: '/game',
       component: GamePage,
+      meta: {
+        icon: 'circle',
+      },
     },
   ],
 });

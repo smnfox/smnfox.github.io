@@ -26,6 +26,8 @@ import MottorModal from './MottorModal.vue';
 import DurakModal from './DurakModal.vue';
 import EditorModal from './EditorModal.vue';
 import MinecraftModal from './MinecraftModal.vue';
+import JamModal from './JamModal.vue';
+import ResumeModal from "./ResumeModal.vue";
 
 interface Project {
   name: string;
@@ -65,7 +67,7 @@ const projects: Project[] = [
     component: DurakModal,
   },
   {
-    name: 'State Editor - визуальный редактор стейтов приложения',
+    name: 'State Editor - визуальный редактор состояний приложения',
     link: '',
     image: '/assets/ssmeditor.webp',
     component: EditorModal,
@@ -75,6 +77,18 @@ const projects: Project[] = [
     link: 'https://smnfox.github.io/minecraft',
     image: '/assets/minecraft.webp',
     component: MinecraftModal,
+  },
+  {
+    name: 'Jam AI client',
+    link: '',
+    image: '/assets/aiassistant.png',
+    component: JamModal,
+  },
+  {
+    name: 'Резюме',
+    link: '/',
+    image: '/assets/resume.png',
+    component: ResumeModal,
   },
 ];
 
@@ -95,6 +109,8 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+@use '../styles/breakpoints' as *;
+
 .projects {
   display: flex;
   gap: 24px;
@@ -102,6 +118,10 @@ onUnmounted(() => {
 }
 
 .project {
+  @include break-to(s, m) using($br-name) {
+    max-width: 100%;
+  }
+
   background: var(--p-card-background);
   color: var(--p-card-color);
   border-radius: 10px;

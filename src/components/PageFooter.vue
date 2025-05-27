@@ -16,7 +16,13 @@ import {contacts} from '../constants';
 </script>
 
 <style scoped lang="scss">
+@use '../styles/breakpoints' as *;
+
 .page-footer {
+  @include break-to(s) using($br-name) {
+    margin-bottom: 76px;
+  }
+
   display: flex;
   justify-content: space-between;
   align-items: center;

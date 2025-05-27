@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TypedText from './TypedText.vue';
-import { Button } from 'primevue';
+import { Button, Card, ButtonGroup } from 'primevue';
 import SkillsCarousel from './SkillsCarousel.vue';
 import {openUrl} from '../helpers.ts';
 import {contacts, helloTexts, rickrollLink} from '../constants';
@@ -18,33 +18,32 @@ import ExperienceTimeline from './ExperienceTimeline.vue';
         <span>В коммерческой разработке с 2020 года</span>
       </p>
       <div class="screen-hello__actions">
-        <Button
-          label="Резюме"
-          icon="pi pi-file-pdf"
-          icon-pos="right"
-          as="a"
-          :href="contacts.resume"
-          target="_blank"
-          raised
-        />
-        <Button
-          label="GitHub"
-          icon="pi pi-github"
-          icon-pos="right"
-          as="a"
-          :href="contacts.github"
-          target="_blank"
-          raised
-        />
-        <Button
-          label="Телеграм"
-          icon="pi pi-telegram"
-          icon-pos="right"
-          as="a"
-          :href="contacts.telegram"
-          target="_blank"
-          raised
-        />
+        <ButtonGroup>
+          <Button
+            label="Резюме"
+            icon="pi pi-file-pdf"
+            icon-pos="right"
+            as="a"
+            :href="contacts.resume"
+            target="_blank"
+          />
+          <Button
+            label="GitHub"
+            icon="pi pi-github"
+            icon-pos="right"
+            as="a"
+            :href="contacts.github"
+            target="_blank"
+          />
+          <Button
+            label="Телеграм"
+            icon="pi pi-telegram"
+            icon-pos="right"
+            as="a"
+            :href="contacts.telegram"
+            target="_blank"
+          />
+        </ButtonGroup>
       </div>
     </div>
     <img
@@ -57,24 +56,25 @@ import ExperienceTimeline from './ExperienceTimeline.vue';
   <section class="screen screen-skills">
     <SkillsCarousel />
   </section>
+  <h2>Коротко обо мне</h2>
+  <Card>
+    <template #content>
+      Считаю себя уверенным Middle/Middle+ разработчиком, с широким кругозором. Ценю чистоту и читаемость кода, борюсь за качество и пользовательский опыт - 2 года до разработки работала в службе поддержки.
+      <br><br>
+      Всегда работала в команде, умею прислушиваться к чужому мнению, обмениваться опытом и договариваться, в том числе с коллегами из других команд. Есть опыт наставничества и управления небольшим проектом.
+      <br><br>
+      Интересуюсь геймдевом, хожу на профильные мероприятия. Активно изучаю three.js в своих проектах.
+      <br><br>
+      Ищу только удаленку, но будет круто иметь возможность иногда посещать офис в Санкт-Петербурге :)
+    </template>
+  </Card>
   <ExperienceTimeline />
   <ProjectCards />
-  <section class="screen screen--card screen-about">
-    <div class="screen__title">
-      Обо мне
-    </div>
-    Ценю чистоту и читаемость кода, считаю и отстаиваю позицию, что качество важнее
-    скорости. Но еще важнее пользовательский опыт, так что я знаю баланс между "залить по быстрому без ревью и тестов" и "потратить месяц на рефакторинг".
-    <br><br>
-    Всегда работала в команде, умею прислушиваться к чужому мнению, обмениваться опытом и договариваться, в том числе с коллегами из других команд. Есть опыт наставничества и управления небольшим проектом.
-    <br><br>
-    Интересуюсь геймдевом, хожу на профильные мероприятия. Активно изучаю three.js в своих проектах.
-    <br><br>
-    Ищу только удаленку, но будет круто иметь возможность иногда посещать офис в Санкт-Петербурге и встречаться с коллегами :)
-  </section>
 </template>
 
 <style scoped lang="scss">
+@use '../styles/breakpoints' as *;
+
 .screen {
   width: 100%;
   padding: 0 24px;
@@ -102,6 +102,14 @@ import ExperienceTimeline from './ExperienceTimeline.vue';
 }
 
 .screen-hello {
+  @include break-to(s) using($br-name) {
+    flex-direction: column;
+    max-height: none;
+    height: auto;
+    gap: 16px;
+    padding-top: 16px;
+  }
+
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -120,7 +128,11 @@ import ExperienceTimeline from './ExperienceTimeline.vue';
   }
 
   &__image {
-    width: 300px;
+    @include break-to(s) using($br-name) {
+      width: 60%;
+    }
+
+    width: 40%;
     aspect-ratio: 1 / 1;
   }
 }

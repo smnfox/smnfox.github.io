@@ -12,36 +12,39 @@
         :icon="darkMode ? 'pi pi-moon' : 'pi pi-sun'"
         @click="toggleDarkMode"
       />
-      <Divider layout="vertical" />
-      <Button
-        v-for="route in $router.options.routes"
-        :key="route.path"
-        v-slot="slotProps"
-        as-child
-      >
-        <RouterLink
-          :to="route.path"
-          :class="slotProps.class"
-        >
-          {{ route.name }}
-        </RouterLink>
-      </Button>
-      <Button
-        label="Контакты"
-        @click="toggleContacts"
-      />
-      <div
-        v-show="contactsVisible"
-        ref="contactsElem"
-        class="header__contacts"
-      >
+      <div class="header__menu-for-pc">
+        <Divider layout="vertical" />
         <Button
-          v-for="contact in contactsList"
-          :key="contact.name"
-          :label="contact.name"
-          raised
-          @click="openUrl(contact.link)"
+          v-for="route in $router.options.routes"
+          :key="route.path"
+          v-slot="slotProps"
+          as-child
+        >
+          <RouterLink
+            :to="route.path"
+            :class="slotProps.class"
+          >
+            {{ route.name }}
+          </RouterLink>
+        </Button>
+        <Button
+          label="Контакты"
+          @click="toggleContacts"
         />
+        <div
+          ref="contactsElem"
+          class="header__contacts"
+          :class="contactsVisible ? 'header__contacts--visible' : ''"
+        >
+          <Button
+            v-for="(contact, index) in contactsList"
+            :key="contact.name"
+            :class="`header__contacts-btn header__contacts-btn--${index + 1}`"
+            :label="contact.name"
+            raised
+            @click="openUrl(contact.link)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -52,7 +55,7 @@ import {openUrl} from '../helpers.ts';
 import {ref, useTemplateRef} from 'vue';
 import {onClickOutside, useStorage} from '@vueuse/core';
 import {Button, Divider} from 'primevue';
-import {contacts} from '../constants';
+import {contactsList} from '../constants';
 
 const contactsVisible = ref(false);
 const toggleContacts = (event: Event) => {
@@ -67,30 +70,6 @@ onClickOutside(contactsElem, (event: Event) => {
   }
 });
 
-interface Contact {
-  name: string
-  link: string
-}
-
-const contactsList: Contact[] = [
-  {
-    name: 'telegram',
-    link: contacts.telegram,
-  },
-  {
-    name: 'email',
-    link: 'mailto:smnfox61@gmail.com',
-  },
-  {
-    name: 'github',
-    link: 'https://github.com/smnfox',
-  },
-  {
-    name: 'pdf',
-    link: '/resume.pdf',
-  },
-];
-
 const darkMode = useStorage('dark-mode', false);
 const toggleDarkMode = () => {
   darkMode.value = !darkMode.value;
@@ -99,6 +78,8 @@ const toggleDarkMode = () => {
 </script>
 
 <style scoped lang="scss">
+@use '../styles/breakpoints' as *;
+
 .header {
     padding: 8px;
     display: flex;
@@ -131,14 +112,59 @@ const toggleDarkMode = () => {
         gap: 4px;
     }
 
+    &__menu-for-pc {
+      @include break-to(s) using($br-name) {
+        display: none;
+      }
+
+      display: flex;
+      gap: 4px;
+    }
+
     &__contacts {
       position: absolute;
       right: 8px;
-      top: 53px;
+      top: calc(100% - 4px);
       display: flex;
       flex-direction: column;
       gap: 8px;
       z-index: 1;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      perspective: 1000px;
+
+      &--visible {
+        opacity: 1;
+        visibility: visible;
+
+        @for $i from 1 through 4 {
+          .header__contacts-btn--#{$i} {
+            transform-origin: top center;
+            animation: scaleZ 300ms calc(#{$i} * 60ms) ease-in-out forwards;
+          }
+        }
+      }
     }
+
+    &__contacts-btn {
+      opacity: 0;
+    }
+}
+
+@keyframes scaleZ {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  80% {
+    transform: scale(1.07);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
-    <span class="typed-text">{{ typeValue }}</span>
-    <span
-      class="cursor"
-      :class="{'typing': typeStatus}"
-    >&nbsp;</span>
+  <div class="text-container">
+    <div class="typed-text">
+      {{ typeValue }}
+      <span
+        class="cursor"
+        :class="{'typing': typeStatus}"
+      >&nbsp;</span>
+    </div>
   </div>
 </template>
 
@@ -29,7 +31,7 @@ const { texts = [] } = defineProps({
 
 const typeText = () => {
   if (charIndex.value < texts[textArrayIndex.value].length) {
-    if(!typeStatus.value) {
+    if (!typeStatus.value) {
       typeStatus.value = true;
     }
 
@@ -75,34 +77,40 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-  .container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+@use '../styles/breakpoints' as *;
 
-    font-size: 36px;
-    font-weight: 700;
+.text-container {
+  @include break-to(s) using($br-name) {
+    font-size: 30px;
+  }
 
-    span.typed-text {
-      color: var(--p-text-color);
-    }
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 
-    span.cursor {
-      display: inline-block;
-      margin-left: 3px;
-      width: 4px;
-      background-color: var(--p-text-color);
-      animation: cursorBlink 1s infinite;
-    }
+  font-size: 36px;
+  font-weight: 700;
 
-    span.cursor.typing {
+  .typed-text {
+    color: var(--p-text-color);
+  }
+
+  .cursor {
+    display: inline-block;
+    margin-left: 3px;
+    width: 4px;
+    background-color: var(--p-text-color);
+    animation: cursorBlink 1s infinite;
+
+    &.typing {
       animation: none;
     }
   }
+}
 
-  @keyframes cursorBlink {
-    49% { background-color: var(--p-text-color) }
-    50% { background-color: transparent; }
-    99% { background-color: transparent; }
-  }
+@keyframes cursorBlink {
+  49% { background-color: var(--p-text-color) }
+  50% { background-color: transparent; }
+  99% { background-color: transparent; }
+}
 </style>

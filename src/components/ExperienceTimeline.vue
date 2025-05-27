@@ -2,12 +2,15 @@
   <h2>Коммерческий опыт работы</h2>
   <Card>
     <template #content>
+      <div>Опыт работы официально разработчиком - 4 года 7 месяцев. В целом в IT компаниях - более 6 лет.</div>
+      <br>
+      <br>
       <Timeline
         :value="myCompanies"
         class="experience-timeline"
       >
         <template #opposite="slotProps">
-          <div class="experience-timeline__subheader">
+          <div class="experience-timeline__subheader pc-only">
             {{ getDateRange(slotProps.item.dateStart, slotProps.item.dateEnd) }}
           </div>
         </template>
@@ -15,6 +18,9 @@
           <div class="experience-timeline__content">
             <div class="experience-timeline__header">
               {{ slotProps.item.name }}
+            </div>
+            <div class="experience-timeline__subheader mobile-only">
+              {{ getDateRange(slotProps.item.dateStart, slotProps.item.dateEnd) }}
             </div>
             <div class="experience-timeline__subheader">
               {{ slotProps.item.position }}
@@ -73,6 +79,8 @@ const getDateRange = (from: string, to: string): string => {
 </script>
 
 <style lang="scss" scoped>
+@use '../styles/breakpoints' as *;
+
 .experience-timeline {
   &__content {
     display: flex;
@@ -91,6 +99,10 @@ const getDateRange = (from: string, to: string): string => {
 }
 
 :deep(.p-timeline-event-opposite) {
+  @include break-to(s) using($br-name) {
+    display: none;
+  }
+
   flex: 0 0 20%;
 }
 </style>
